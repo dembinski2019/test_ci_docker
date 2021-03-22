@@ -65,9 +65,7 @@ jobs:
         PASS: ${{secrets.PASS}}
       run: |
         git submodule init
-        git submodule update --remote
-        Username: USER
-        Password: PASS
+        git submodule update --remote -u USER-p PASS
     - name: build image docker
       env:
         NOME: ${{secrets.NOME}}
