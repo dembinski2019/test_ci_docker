@@ -64,7 +64,7 @@ jobs:
         USER: ${{ secrets.USER }}
         PASS: ${{secrets.PASS}}
       run: |
-        gh auth login --with-token PASS
+        gh auth login --with-token USER:PASS
     - name: ativa o submodule
       run: |
         git submodule init
