@@ -1,3 +1,3 @@
 [submodule "api"]
 	path = api
-	url = git@github.com:dembinski2019/cat-api.git
+	url = https://github.com/dembinski2019/cat-api.git
