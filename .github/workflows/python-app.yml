@@ -59,17 +59,15 @@ jobs:
     - name: acessa a pasta
       run:
         cd api
-    - name: autentica no github 
+    - name: push submodule 
       env: 
         USER: ${{ secrets.USER }}
         PASS: ${{secrets.PASS}}
       run: |
-        gh auth login --hostname USER --with-token PASS
-    - name: ativa o submodule
-      run: |
         git submodule init
         git submodule update --remote
-        
+        username==USER
+        password==PASS
     - name: build image docker
       env:
         NOME: ${{secrets.NOME}}
