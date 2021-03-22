@@ -1,0 +1,72 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Test Ci
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  # build:
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Set up Python 3.9
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: 3.9
+  #   - name: build image docker
+  #     run:
+  #       docker build -t dembinskieverton/app-py:latest -f Dockerfile .
+  
+  push-image:
+
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      run: |
+        docker build -t 347027145980.dkr.ecr.us-east-2.amazonaws.com/dembinskieverton:latest -f Dockerfile .
+        docker push 347027145980.dkr.ecr.us-east-2.amazonaws.com/dembinskieverton:latest
+        echo "::set-output name=image::347027145980.dkr.ecr.us-east-2.amazonaws.com/dembinskieverton:latest"
+  nova-image:
+
+    runs-on: ubuntu-latest
+    #needs: push-image
+    steps:
+    - uses: actions/checkout@v2
+    - name: login docker
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASS: ${{secrets.DOCKER_PASS}}
+      run:
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+    
+    - name: build image docker
+      env:
+        NOME: ${{secrets.NOME}}
+      run:
+        docker build -t dembinskieverton/app3-py:latest -f Dockerfile .
+    - name: run na image
+      run:
+        docker run dembinskieverton/app3-py:latest
+    - name: push image docker
+      run:
+        docker push dembinskieverton/app3-py:latest
+    
