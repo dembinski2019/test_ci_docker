@@ -58,7 +58,8 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASS
     - name: active submodule
       env: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        USER: ${{ secrets.USER }}
+        PASS: ${{secrets.PASS}}
       run: |
         cd api
         git submodule init
