@@ -48,8 +48,14 @@ jobs:
 
     runs-on: ubuntu-latest
     #needs: push-image
+    
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@master
+      with:
+        remote: true
     - name: login docker
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
