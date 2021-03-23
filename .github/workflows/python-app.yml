@@ -53,9 +53,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
+      uses: textbook/git-checkout-submodule-action@master
       with:
-        args: git submodule update --init --recursive
+        remote: true
     - name: login docker
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
