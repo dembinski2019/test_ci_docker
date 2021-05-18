@@ -83,5 +83,5 @@ jobs:
 #         docker run dembinskieverton/app3-py:latest
     - name: push image docker
       run:
-        docker push dembinskieverton/ci_python_test:${{github.ref}}
+        docker push dembinskieverton/ci_python_test:${{github.head_ref}}
     
